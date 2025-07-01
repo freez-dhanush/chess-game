@@ -95,5 +95,12 @@ socket.on("move", (move) => {
     chess.move(move);
     renderBoard();
 });
+socket.on("gameOver", (data) => {
+    if (data.winner) {
+        alert(`${data.winner === 'w' ? "White" : "Black"} wins by checkmate!`);
+    } else {
+        alert("Game drawn!");
+    }
+});
 
 renderBoard();

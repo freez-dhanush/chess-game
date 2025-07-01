@@ -44,9 +44,15 @@ io.on("connection", (socket) => {
             if (result) {
                 io.emit("move", move);
                 io.emit("boardState", chess.fen());
-            } else {
-                socket.emit("invalidMove", move);
+
+                if (chess.isCheckmate()) {
+                    io.emit("gameOver", { winner: turn });
+                } else if (chess.isDraw()) {
+                    io.emit("gameOver", { winner: null, reason: "draw" });
+                }
+
             }
+
         } catch (err) {
             console.error("Error processing move:", err.message);
             socket.emit("error", "Invalid move attempt");
